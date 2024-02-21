@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  promtail:
+    container_name: promtail
+    image: grafana/promtail
+    volumes:
+      - type: bind
+        source: ./config/promtail/config.yaml
+        target: /etc/promtail/config.yaml
+      - type: bind
+        source: /var/log
+        target: /var/log
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    command:
+      - '--config.file=/etc/promtail/config.yaml'
+    restart: unless-stopped
