@@ -35,14 +35,11 @@ pipeline {
                 script {
                     withVault([vaultSecrets: [[path: 'Datawords/internal', secretValues: [
                         [vaultKey: 'HARBOR-DOMAIN', envVar: 'HARBOR_DOMAIN'],
-                        [vaultKey: 'BITBUCKET-SSH-PRIVATE', envVar: 'BITBUCKET_SSH_KEY'],
                     ]]]]) {
-                        sshagent(credentials: ['BITBUCKET_SSH_KEY']) {
-                            sh """
-                            docker build -t ${HARBOR_DOMAIN}/datawords/promtail:vpc -f dockerfile --target vpc .
-                            docker build -t ${HARBOR_DOMAIN}/datawords/promtail:public -f dockerfile --target public .
-                            """
-                        }
+                        sh """
+                        docker build -t ${HARBOR_DOMAIN}/datawords/promtail:vpc -f dockerfile --target vpc .
+                        docker build -t ${HARBOR_DOMAIN}/datawords/promtail:public -f dockerfile --target public .
+                        """
                     }
                 }
             }
